@@ -1,4 +1,4 @@
-
+import { sendForm } from "./dataAccess.js"
 
 
 export const PartyForm = () => {
@@ -25,11 +25,40 @@ export const PartyForm = () => {
     </div>
     <div class="field">
         <label class="label" for="partyLength">Length of party</label>
-        <input type="time" name="partyLength" class="input" />
+        <input type="tel" name="partyLength" class="input" />
     </div>
 
-    <button class="button" id="submitPartyForm">Submit Form</button>
+    <button class="button" style="vertical-align:middle"><span id="submitPartyForm">Submit Form</span></button>
     `
 
     return html
 }
+
+const mainContainer = document.querySelector("#container")
+
+mainContainer.addEventListener("click", clickEvent => {
+    if (clickEvent.target.id === "submitPartyForm") {
+        // get what the user typed into the forms
+        const userName = document.querySelector("input[name='parentName']").value
+        const userChild = document.querySelector("input[name='childName']").value
+        const userAttendence = document.querySelector("input[name='numberAttending']").value
+        const userAdress = document.querySelector("input[name='address']").value
+        const userDate = document.querySelector("input[name='partyDate']").value
+        const userLength = document.querySelector("input[name='partyLength']").value
+
+        // Make an object out of the user input
+        const dataToSend = {
+            parentName: userName,
+            childName: userChild,
+            attending: userAttendence,
+            address: userAdress,
+            date: userDate,
+            length: userLength,
+            completion: false
+        }
+
+        // Send the data to the API for permanent storage
+        sendForm(dataToSend)
+
+    }
+})
